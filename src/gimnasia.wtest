@@ -1,5 +1,6 @@
 import src.persona.*
 import gimnasia.*
+import club.*
 
 describe "rutinas" {
 	const correrEnLaPlaya = new Running(intensidad = 1.2)
@@ -88,6 +89,47 @@ describe "Persona: Atletas" {
 	}
 }
 
+
+describe "Clubes" {
+	const correrEnLaPlaya = new Running(intensidad = 1.2)
+	const remito = new Remo()
+	const maratonBA = new Maraton(intensidad = 1.5)
+	const remoPro = new RemoDeCompeticion()
+
+
+	const recreo = new Predio(rutinas = #{correrEnLaPlaya,maratonBA})
+	const nautico = new Predio(rutinas = #{remito,remoPro})
+	const bob = new Atleta(peso = 40, tiempo = 90)
+	const calamardo = new Sedentario(peso = 60, tiempo = 5)
+
+	const clubBarrial = new Club(predios = #{nautico,recreo})
+  	test "Mejor predio para bob" {
+		assert.equals(35700, recreo.caloriasTotales(bob))
+		assert.equals(22110, nautico.caloriasTotales(bob))
+  	}
+
+	test "Mejor predio para Calamardo" {
+		assert.equals(1260, recreo.caloriasTotales(calamardo))
+		assert.equals(1030, nautico.caloriasTotales(calamardo))
+  	}
+
+	test "No hay predio tranqui para bob" {
+		assert.that(clubBarrial.prediosTranquiPara(bob).isEmpty())
+	}
+
+	test "Predio tranqui para calamardo: recreo" {
+		assert.equals(#{recreo}, clubBarrial.prediosTranquiPara(calamardo))
+	}
+
+	test "Rutinas mas exigentes para bob" {
+		assert.equals(#{maratonBA,remoPro}, clubBarrial.rutinasMasExigentes(bob))
+	}
+
+	test "Rutinas mas exigentes para calamardo" {
+		assert.equals(#{maratonBA,remito}, clubBarrial.rutinasMasExigentes(calamardo))
+
+	}
+}
 //Punto 3: clubes
 	//const recreo = //un predio con correrEnLaPlaya y maratonBA
 	//const nautico = //un predio con remarEnElDelta y remarEnCaminoRemeros
