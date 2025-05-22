@@ -14,12 +14,8 @@ class Running inherits Rutina {
     var property intensidad
 
     override method descanso(tiempo){
-        return self.descansoPorTiempo(tiempo)
-    } 
-
-    method descansoPorTiempo(tiempo){
         return if (tiempo > 20) { 5 } else { 2 }
-    }
+    } 
 }
 
 
@@ -41,9 +37,6 @@ class Remo inherits Rutina {
         return tiempo / 5 
     }
 
-    override method caloriasQueQuema(duracion){
-        return super(duracion) * self.intensidad()
-    }
 }
 
 
