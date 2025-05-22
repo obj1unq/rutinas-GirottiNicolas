@@ -1,30 +1,29 @@
 
 class Rutina {
-    var property intensidad
-    var property descanso = 0
-
+    method intensidad()
+    
+    method descanso(tiempo) 
 
     method caloriasQueQuema(tiempo) {
-        return 100 * (tiempo - descanso) * intensidad
+        return 100 * (tiempo - self.descanso(tiempo)) * self.intensidad()
     }
-
-
 }
 
 class Running inherits Rutina {
-    const tiempo
     
-    override method descanso(){
-        return self.descansoPorTiempo()
+    var property intensidad
+
+    override method descanso(tiempo){
+        return self.descansoPorTiempo(tiempo)
     } 
 
-    method descansoPorTiempo(){
+    method descansoPorTiempo(tiempo){
         return if (tiempo > 20) { 5 } else { 2 }
     }
 }
 
 
-class Maraton inherits Rutina {
+class Maraton inherits Running {
 
     override method caloriasQueQuema(tiempo){
         return super(tiempo) * 2
@@ -32,17 +31,29 @@ class Maraton inherits Rutina {
 } 
 
 
-class Remo inherits Rutina(intensidad = 1.3) {
+class Remo inherits Rutina {
     
-    const tiempo
-    
-    override method descanso(){
+    override method intensidad(){
+        return 1.3
+    }
+
+    override method descanso(tiempo){
         return tiempo / 5 
     }
 
     override method caloriasQueQuema(duracion){
-        return super(duracion) * intensidad
+        return super(duracion) * self.intensidad()
     }
 }
 
 
+class RemoDeCompeticion inherits Remo{ // Alternativa Remo(intensidad = 1.7)
+    override method intensidad(){
+        return 1.7
+    }
+
+    override method descanso(tiempo){
+        return (super(tiempo) - 3).max(2)
+    }
+    
+}
